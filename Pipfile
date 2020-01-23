@@ -1,0 +1,19 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.douban.com/simple/"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+Django = "*"
+djangorestframework = "*"
+pillow = "*"
+djangorestframework-jwt = "*"
+django-filters = "*"
+django-filter = "*"
+pyyaml = "*"
+django-simpleui = "*"
+
+[requires]
+python_version = "3.7"
