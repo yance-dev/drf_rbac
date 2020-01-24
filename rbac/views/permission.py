@@ -1,5 +1,3 @@
-# @Time    : 2019/1/30 14:40
-# @Author  : xufqing
 from rest_framework.viewsets import ModelViewSet
 from ..models import Permission
 from ..serializers.permission_serializer import PermissionListSerializer

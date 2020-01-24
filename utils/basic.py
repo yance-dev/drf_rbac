@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 
 
-class XopsResponse(Response):
+class Response(Response):
     def __init__(self, data=None, status=200, msg='成功',
                  template_name=None, headers=None,
                  exception=False, content_type=None):

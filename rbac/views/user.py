@@ -1,27 +1,51 @@
-# @Time    : 2019/1/12 21:03
-# @Author  : xufqing
+# -*- coding: utf-8 -*-
+"""
+@Time    : 2020/1/24 12:42
+@Author  : Young
+@Email   : hyc554@gmail.com
+@File    : user.py
+# code is far away from bugs with the god animal protecting
+    I love animals. They taste delicious.
+         ┌─┐       ┌─┐
+      ┌──┘ ┴───────┘ ┴──┐
+      │                 │
+      │       ───       │
+      │  ─┬┘       └┬─  │
+      │                 │
+      │       ─┴─       │
+      │                 │
+      └───┐         ┌───┘
+          │         │
+          │         │
+          │         │
+          │         └──────────────┐
+          │                        │
+          │                        ├─┐
+          │                        ┌─┘
+          │                        │
+          └─┐  ┐  ┌───────┬──┐  ┌──┘
+            │ ─┤ ─┤       │ ─┤ ─┤
+            └──┴──┘       └──┴──┘
+"""
 from operator import itemgetter
 
 import jwt
-# from cmdb.models import ConnectionInfo
-from utils.custom import CommonPagination, RbacPermission
+from django.conf import settings
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import check_password
-from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework_jwt.settings import api_settings
-from rest_framework.response import Response
-from utils.basic import XopsResponse
-from utils.code import *
-from django.conf import settings
 
+from utils.code import *
+from utils.custom import CommonPagination, RbacPermission
 from ..models import UserProfile, Menu
 from ..serializers.menu_serializer import MenuSerializer
 from ..serializers.user_serializer import UserListSerializer, UserCreateSerializer, UserModifySerializer, \
@@ -32,9 +56,9 @@ jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
 
 class UserAuthView(APIView):
-    '''
+    """
     用户认证获取token
-    '''
+    """
 
     def post(self, request, *args, **kwargs):
         username = request.data.get('username')
@@ -44,13 +68,13 @@ class UserAuthView(APIView):
             payload = jwt_payload_handler(user)
             return Response({'token': jwt.encode(payload, settings.SECRET_KEY)})
         else:
-            return Response({"detail":'用户名或密码错误!'},status=403)
+            return Response({"detail": '用户名或密码错误!'}, status=403)
 
 
 class UserInfoView(APIView):
-    '''
+    """
     获取当前用户信息和权限
-    '''
+    """
 
     @classmethod
     def get_permission_from_role(self, request):
@@ -78,7 +102,7 @@ class UserInfoView(APIView):
 
             return Response(data, status=OK)
         else:
-            return Response({"detail":'用户名或密码错误!'}, status=FORBIDDEN)
+            return Response({"detail": '用户名或密码错误!'}, status=FORBIDDEN)
 
 
 class UserBuildMenuView(APIView):
@@ -319,29 +343,12 @@ class UserViewSet(ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         # 创建用户默认添加密码
-        request
         request.data['password'] = '123456'
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=CREATED, headers=headers)
-
-    def destroy(self, request, *args, **kwargs):
-        # 删除用户时删除其他表关联的用户
-        instance = self.get_object()
-        id = str(kwargs['pk'])
-        projects = Project.objects.filter(
-            Q(user_id__icontains=id + ',') | Q(user_id__in=id) | Q(user_id__endswith=',' + id)).values()
-        if projects:
-            for project in projects:
-                user_id = project['user_id'].split(',')
-                user_id.remove(id)
-                user_id = ','.join(user_id)
-                Project.objects.filter(id=project['id']).update(user_id=user_id)
-        ConnectionInfo.objects.filter(uid_id=id).delete()
-        self.perform_destroy(instance)
-        return XopsResponse(status=NO_CONTENT)
 
     @action(methods=['post'], detail=True, permission_classes=[IsAuthenticated],
             url_path='change-passwd', url_name='change-passwd')
@@ -354,9 +361,9 @@ class UserViewSet(ModelViewSet):
             if new_password1 == new_password2:
                 user.set_password(new_password2)
                 user.save()
-                return XopsResponse('密码修改成功!')
+                return Response({"detail": '密码修改成功!'})
             else:
-                return XopsResponse('新密码两次输入不一致!', status=status.HTTP_400_BAD_REQUEST)
+                return Response({"detail": '新密码两次输入不一致!'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             old_password = request.data['old_password']
             if check_password(old_password, user.password):
@@ -365,11 +372,11 @@ class UserViewSet(ModelViewSet):
                 if new_password1 == new_password2:
                     user.set_password(new_password2)
                     user.save()
-                    return XopsResponse('密码修改成功!')
+                    return Response({"detail": '密码修改成功!'})
                 else:
-                    return XopsResponse('新密码两次输入不一致!', status=status.HTTP_400_BAD_REQUEST)
+                    return Response({"detail": '新密码两次输入不一致!'}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                return XopsResponse('旧密码错误!', status=status.HTTP_400_BAD_REQUEST)
+                return Response({"detail": '旧密码错误!'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserListView(ListAPIView):
