@@ -1,5 +1,3 @@
-# @Time    : 2019/3/28 16:13
-# @Author  : xufqing
 from rest_framework import status
 
 # 成功

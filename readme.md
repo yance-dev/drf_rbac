@@ -2,16 +2,9 @@
 
 > 旨在为Django REST framework打造一个开箱即用的RBAC(基于角色的权限管理)系统
 
-[![NPM Version][npm-image]][npm-url]
-[![Build Status][travis-image]][travis-url]
-[![Downloads Stats][npm-downloads]][npm-url]
-
-旨在为Django REST framework打造一个开箱即用的RBAC(基于角色的权限管理)系统
-
+肺炎肆虐，在家整理的一个开源权限组件
 
 ## Getting Started 使用指南
-
-项目使用条件、如何安装部署、怎样运行使用以及使用演示
 
 ### Prerequisites 项目使用条件
 
@@ -31,8 +24,6 @@ django-simpleui = "*"
 [requires]
 python_version = "3.7"
 ```
-
-
 
 ### Installation 安装
 
