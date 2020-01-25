@@ -1,18 +1,16 @@
 # @Time    : 2019/1/13 11:28
 # @Author  : xufqing
-from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import BasePermission
-from rest_framework import serializers
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-from rest_framework.permissions import IsAuthenticated
-from utils.basic import Response
-from rest_framework.generics import ListAPIView
-from rest_framework.views import exception_handler
-from errno import errorcode
 # import celery, logging, redis
 import logging
-from django.conf import settings
+
+from rest_framework import serializers
+from rest_framework.generics import ListAPIView
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import BasePermission
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import exception_handler
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 error_logger = logging.getLogger('error')
 info_logger = logging.getLogger('info')

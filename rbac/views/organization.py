@@ -4,7 +4,6 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.response import Response
-from utils.basic import Response
 from utils.custom import CommonPagination, RbacPermission, TreeAPIView
 from ..models import Organization
 from ..serializers.organization_serializer import OrganizationSerializer, OrganizationUserTreeSerializer
