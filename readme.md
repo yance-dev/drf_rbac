@@ -2,6 +2,10 @@
 
 > 旨在为Django REST framework打造一个开箱即用的RBAC(基于角色的权限管理)系统
 
+核心rbac模块来源于[rest_xops](https://github.com/xufqing/rest_xops)，本项目对其中的权限管理进行了剥离，在此基础上对drf的responce进行二次封装，实现兼容自定义的responce返回。
+
+
+
 肺炎肆虐，在家整理的一个开源权限组件
 
 ## Getting Started 使用指南
